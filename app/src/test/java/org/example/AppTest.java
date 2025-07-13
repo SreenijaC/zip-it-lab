@@ -4,11 +4,51 @@
 package org.example;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+
+    @Test
+    void testZipEqualSize() {
+        List<Integer> a = List.of(1, 2, 3);
+        List<Integer> b = List.of(4, 5, 6);
+        assertEquals(List.of(1, 4, 2, 5, 3, 6), ZipAndMap.zip(a, b));
+    }
+
+    @Test
+    void testZipFirstListLonger() {
+        List<String> a = List.of("a", "e", "i", "o", "u");
+        List<String> b = List.of("w", "x", "y");
+        assertEquals(List.of("a", "w", "e", "x", "i", "y", "o", "u"), ZipAndMap.zip(a, b));
+    }
+
+    @Test
+    void testZipSecondListLonger() {
+        List<Double> a = List.of(1.5, 2.6);
+        List<Double> b = List.of(0.5, 7.8, 12.6, 13.4);
+        assertEquals(List.of(1.5, 0.5, 2.6, 7.8, 12.6, 13.4), ZipAndMap.zip(a, b));
+    }
+
+    @Test
+    void testHashmapifyValid() {
+        List<String> keys = List.of("x", "y", "z");
+        List<Integer> vals = List.of(10, 20, 30);
+        Map<String, Integer> result = ZipAndMap.hashmapify(keys, vals);
+        assertEquals(3, result.size());
+        assertEquals(10, result.get("x"));
+        assertEquals(20, result.get("y"));
+        assertEquals(30, result.get("z"));
+    }
+
+    @Test
+    void testHashmapifyInvalidSizes() {
+        List<String> keys = List.of("one", "two");
+        List<String> vals = List.of("alpha");
+        assertThrows(IllegalArgumentException.class, () -> {
+            ZipAndMap.hashmapify(keys, vals);
+        });
     }
 }
